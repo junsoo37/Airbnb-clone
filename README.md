@@ -1,2 +1,2 @@
 # Airbnb-clone
-Study by cloning airbnb
+Study Django based backend and basic frontend Logics

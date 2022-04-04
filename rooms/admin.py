@@ -5,13 +5,18 @@ from rooms import models
 @admin.register(models.RoomType, models.Facility, models.Amenity, models.HouseRule)
 class ItemAdmin(admin.ModelAdmin):
     """ Item Admin Definition"""
-    pass
+    list_display = (
+        "name",
+        "used_by"
+    )
+
+    def used_by(self, obj):
+        return obj.rooms.count()
 
 
 @admin.register(models.Room)
 class RoomAdmin(admin.ModelAdmin):
     """ Room Admin Definition"""
-
     fieldsets = (
         (
             "Basic Info",
@@ -37,7 +42,8 @@ class RoomAdmin(admin.ModelAdmin):
         "check_in",
         "check_out",
         "instant_book",
-        "count_amenities"
+        "count_amenities",
+        "count_photos",
     )
 
     ordering = ("name", "price", "bedrooms")
@@ -62,9 +68,12 @@ class RoomAdmin(admin.ModelAdmin):
         "house_rules"
     )
 
-    # obj는 해당 row (즉 Room Row), self는 admin
+    # obj는 해당 row (즉 Room Row)
     def count_amenities(self, obj):
         return obj.amenities.count()
+
+    def count_photos(self, obj):
+        return obj.photos.count()
 
 
 @admin.register(models.Photo)

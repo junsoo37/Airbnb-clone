@@ -41,8 +41,8 @@ class HouseRule(AbstractItem):
 class Photo(core_models.TimeStampedModel):
     """ Photo Model Definition"""
     caption = models.CharField(max_length=80)
-    file = models.ImageField(upload_to="rooms")
-    room = models.ForeignKey("Room", related_name="photos", on_delete=models.CharField)    # Model은 import해도 되지만, string으로 대체 가능하다.
+    file = models.ImageField(upload_to="room_photos")
+    room = models.ForeignKey("Room", related_name="photos", on_delete=models.CASCADE)    # Model은 import해도 되지만, string으로 대체 가능하다.
 
     def __str__(self):
         return self.caption
@@ -77,5 +77,8 @@ class Room(core_models.TimeStampedModel):
 
     def total_rating(self):
         all_reviews = self.reviews.all()
-        all_ratings = sum([review.rating_average() for review in all_reviews]) / len(all_reviews)
+        all_ratings = 0
+
+        if len(all_reviews) > 0:
+            all_ratings = sum([review.rating_average() for review in all_reviews]) / len(all_reviews)
         return round(all_ratings, 2)
